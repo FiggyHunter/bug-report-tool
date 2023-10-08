@@ -1,6 +1,7 @@
 import { getUserByEmail } from "../dao/user.dao.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import User from "../models/User.model.js";
 
 export const register = async (req, res) => {
   const { password, ...data } = req.body;
@@ -30,9 +31,13 @@ export const login = async (req, res) => {
     if (user) {
       const match = await bcrypt.compare(password, user.password);
       if (match) {
-        const token = jwt.sign({ userId: user.id }, process.env.SECRET_KEY, {
-          expiresIn: process.env.TOKEN_EXPIRATION_DURATION.toString(),
-        });
+        const token = jwt.sign(
+          { userId: user.id, email: user.email, role: user.role },
+          process.env.SECRET_KEY,
+          {
+            expiresIn: process.env.TOKEN_EXPIRATION_DURATION.toString(),
+          }
+        );
         res.status(200).json({ message: "Logged in!", token });
         return;
       }
