@@ -1,3 +1,4 @@
+import { getBugsById } from "../dao/bug.dao.js";
 import Bug from "../models/BugTicket.model.js";
 
 export const findBugById = async (id) => {
@@ -45,5 +46,28 @@ export const deleteBug = async (req, res) => {
     res.status(500).json({
       error: `Server Exception: Bug was not deleted - ${error.message}`,
     });
+  }
+};
+
+export const getAllBugsByUser = async (req, res) => {
+  const { userId } = req.params;
+  const { role } = req.user;
+  try {
+    const bugs = await getBugsById(userId, role);
+    if (bugs) res.status(400).json({ bugs });
+    else res.status(400).json({ message: "Could not find bugs" });
+  } catch {
+    res.status(400).json({ message: "Server error: Could not fetch bugs" });
+  }
+};
+
+export const changeCompletedStatus = async (req, res) => {
+  const { bugId } = req.params;
+  const { completed } = req.body;
+  try {
+    const bug = await Bug.findByIdAndUpdate(bugId, { completed });
+    res.status(400).json("Updated bug successfully");
+  } catch (e) {
+    res.json("Could not update bug");
   }
 };
