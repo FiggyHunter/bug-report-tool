@@ -10,10 +10,11 @@ export const findBugById = async (id) => {
   }
 };
 
+//TODO
 export const getAllBugs = async (req, res) => {
   try {
     const bugs = await Bug.find({});
-    res.status(200).json(bugs);
+    res.status(200).send(bugs);
   } catch (error) {
     res
       .status(500)
@@ -50,13 +51,13 @@ export const deleteBug = async (req, res) => {
 };
 
 export const getAllBugsByUser = async (req, res) => {
-  const { userId } = req.params;
-  const { role } = req.user;
+  const { role, id } = req.user;
   try {
-    const bugs = await getBugsById(userId, role);
+    const bugs = await getBugsById(id, role);
     if (bugs) res.status(400).json({ bugs });
     else res.status(400).json({ message: "Could not find bugs" });
-  } catch {
+  } catch (e) {
+    console.log(e);
     res.status(400).json({ message: "Server error: Could not fetch bugs" });
   }
 };
