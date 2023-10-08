@@ -8,7 +8,7 @@ const verifyJwtToken = (req, res, next) => {
 
     if (decoded) {
       req.user = {
-        id: decoded.id,
+        id: decoded.userId,
         role: decoded.role,
         email: decoded.email,
       };
