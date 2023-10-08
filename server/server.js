@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 
 import authRoutes from "./routes/auth.routes.js";
 import bugRoutes from "./routes/bug.routes.js";
+import cors from "cors";
 
 const app = express();
 const env = dotenv.config();
@@ -12,6 +13,7 @@ const env = dotenv.config();
 // parse application/json
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors({ origin: "*" }));
 app.use("/auth", authRoutes);
 app.use("/bugs", bugRoutes);
 
