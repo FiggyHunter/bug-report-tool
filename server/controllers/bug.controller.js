@@ -1,4 +1,4 @@
-import { getBugsById } from "../dao/bug.dao.js";
+import { getBugsById } from "../services/bug.dao.js";
 import Bug from "../models/BugTicket.model.js";
 
 export const findBugById = async (id) => {
