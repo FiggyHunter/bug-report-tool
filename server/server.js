@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 
 import authRoutes from "./routes/auth.routes.js";
 import bugRoutes from "./routes/bug.routes.js";
+import projectRoutes from "./routes/project.routes.js";
 import cors from "cors";
 
 const app = express();
@@ -14,8 +15,10 @@ const env = dotenv.config();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({ origin: "*" }));
+
 app.use("/auth", authRoutes);
 app.use("/bugs", bugRoutes);
+app.use("/project", projectRoutes);
 
 app.get("/", (req, res) => {
   console.log(req.body);
@@ -23,7 +26,7 @@ app.get("/", (req, res) => {
 });
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/bug-report")
+  .connect(process.env.DB_URI)
   .then(() => console.log("Connected to DB!"));
 
 app.listen(process.env.SERVER_PORT, () => {
