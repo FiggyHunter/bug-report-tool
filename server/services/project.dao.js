@@ -1,6 +1,6 @@
 import Project from "../models/Project.model.js";
 
-export const getProjectsById = async (userId) => {
+export const getProjectsByUserId = async (userId) => {
   try {
     const projects = await Project.find({ createdBy: userId });
     return projects || null;
