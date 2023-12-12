@@ -3,17 +3,15 @@ const { Schema } = mongoose;
 
 const bugTicketSchema = new Schema({
   title: String,
-  steps: String,
-  assignedTo: String,
-  reportedBy: String,
+  description: String,
+  projectId: String,
   completed: Boolean,
   timestamp: {
     type: Date,
     default: new Date(),
   },
-  severity: String,
 });
 
-const Bug = mongoose.model("bugsTickets", bugTicketSchema);
+const Bug = mongoose.model("bugs", bugTicketSchema);
 
 export default Bug;
