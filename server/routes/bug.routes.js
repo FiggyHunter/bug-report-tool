@@ -11,10 +11,8 @@ import authMiddleware from "../middleware/auth.middleware.js";
 const router = express.Router();
 
 router
-  .get("/", authMiddleware, getAllBugs)
-  .post("/create", authMiddleware, createNewBug)
-  .delete("/delete/:id", authMiddleware, deleteBug)
-  .get("/:userId", authMiddleware, getAllBugsByUser)
-  .patch("/:bugId", authMiddleware, changeCompletedStatus);
+  .get("/", getAllBugs)
+  .post("/create", createNewBug)
+  .delete("/delete/:id", deleteBug);
 
 export default router;
