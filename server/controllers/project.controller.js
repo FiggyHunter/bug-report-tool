@@ -13,11 +13,30 @@ const getAllProjectsByUser = async (req, res) => {
   }
 };
 
+const getAllRecentProjectsByUser = async (req, res) => {
+  try {
+    const id = req.headers["x-user-id"];
+    const projects = (await getProjectsByUserId(id)).slice(-2);
+    if (projects) res.status(200).json({ projects });
+    else res.status(404).json({ message: "User has no projects." });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({ message: "Server error: Could not fetch bugs" });
+  }
+};
+
 const createNewProject = async (req, res) => {
   const data = req.body;
+  console.log(data, req.headers["x-user-id"]);
   try {
-    await Project.create({ ...data });
-    res.status(201).json({ message: "Project created successfully!" });
+    const newProject = await Project.create({
+      ...data,
+      createdBy: req.headers["x-user-id"],
+    });
+    const projectId = newProject._id; // Assuming the ID is stored in the _id field
+    res
+      .status(201)
+      .json({ projectId: projectId, message: "Project created successfully!" });
   } catch (error) {
     res.status(500).json({
       error: `Server Exception: Project was not created - ${error.message}`,
@@ -39,4 +58,9 @@ const getProjectByRequestedId = async (req, res) => {
   }
 };
 
-export { getAllProjectsByUser, createNewProject, getProjectByRequestedId };
+export {
+  getAllProjectsByUser,
+  getAllRecentProjectsByUser,
+  createNewProject,
+  getProjectByRequestedId,
+};
