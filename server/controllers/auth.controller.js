@@ -4,6 +4,10 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.model.js";
 
 export const register = async (req, res) => {
+  /*  
+#swagger.tags = ['User']
+#swagger.description = 'Mock backend to register a user.' 
+*/
   const { password, ...data } = req.body;
 
   if (await getUserByEmail(data.email))
@@ -25,6 +29,10 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
+  /*  
+#swagger.tags = ['User']
+#swagger.description = 'Mock backend to login a user.' 
+*/
   const { email, password } = req.body;
   try {
     const user = await getUserByEmail(email);
