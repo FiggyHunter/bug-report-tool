@@ -10,6 +10,7 @@ const bugTicketSchema = new Schema({
     type: Date,
     default: new Date(),
   },
+  createdBy: String,
 });
 
 const Bug = mongoose.model("bugs", bugTicketSchema);
