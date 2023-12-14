@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const { Schema, model } = mongoose;
+const { Schema } = mongoose;
 // Define the project schema
 const projectSchema = new Schema({
   projectName: {
@@ -21,14 +21,14 @@ const projectSchema = new Schema({
     },
   ],
   createdBy: {
-    type: String, // Assuming user IDs are strings
+    type: String,
     ref: "User",
     required: true,
   },
 });
 
 // Create the Mongoose model
-const Project = model("Project", projectSchema);
+const Project = mongoose.model("Project", projectSchema);
 
 // Export the model for use in other files
 export default Project;
