@@ -8,6 +8,9 @@ import bugRoutes from "./routes/bug.routes.js";
 import projectRoutes from "./routes/project.routes.js";
 import cors from "cors";
 
+import swaggerUi from "swagger-ui-express";
+import swaggerFile from "./swagger-output.json" assert { type: "json" };
+
 const app = express();
 const env = dotenv.config();
 
@@ -19,6 +22,7 @@ app.use(cors({ origin: "*" }));
 app.use("/auth", authRoutes);
 app.use("/bugs", bugRoutes);
 app.use("/project", projectRoutes);
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.get("/", (req, res) => {
   console.log(req.body);
