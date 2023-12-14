@@ -2,9 +2,14 @@ import Project from "../models/Project.model.js";
 import { getProjectsByUserId } from "../services/project.dao.js";
 
 const getAllProjectsByUser = async (req, res) => {
+  /*  
+#swagger.tags = ['Projects']
+#swagger.description = 'Gets all projects from the user that has the ID passed.' 
+*/
   try {
     const id = req.headers["x-user-id"];
-    const projects = await getProjectsByUserId(id);
+
+    const projects = (await getProjectsByUserId(id)).reverse();
     if (projects) res.status(200).json({ projects });
     else res.status(404).json({ message: "User has no projects." });
   } catch (e) {
@@ -14,8 +19,13 @@ const getAllProjectsByUser = async (req, res) => {
 };
 
 const getAllRecentProjectsByUser = async (req, res) => {
+  /*  
+#swagger.tags = ['Projects']
+#swagger.description = 'Endpoint to get the recent 5 projects from the user.' 
+*/
   try {
     const id = req.headers["x-user-id"];
+
     const projects = (await getProjectsByUserId(id)).slice(-2);
     if (projects) res.status(200).json({ projects });
     else res.status(404).json({ message: "User has no projects." });
@@ -26,8 +36,11 @@ const getAllRecentProjectsByUser = async (req, res) => {
 };
 
 const createNewProject = async (req, res) => {
+  /*  
+#swagger.tags = ['Projects']
+#swagger.description = 'Endpoint to create a new project.' 
+*/
   const data = req.body;
-  console.log(data, req.headers["x-user-id"]);
   try {
     const newProject = await Project.create({
       ...data,
@@ -45,6 +58,10 @@ const createNewProject = async (req, res) => {
 };
 
 const getProjectByRequestedId = async (req, res) => {
+  /*  
+#swagger.tags = ['Projects']
+#swagger.description = 'Gets a project by requested ID.' 
+*/
   const id = req.params.id;
   console.log(id);
   try {
@@ -58,9 +75,29 @@ const getProjectByRequestedId = async (req, res) => {
   }
 };
 
+const getProjectName = async (req, res) => {
+  /*  
+#swagger.tags = ['Projects']
+#swagger.description = 'Gets a project name by requested ID.' 
+*/
+  const projectId = req.headers["project-id"];
+  console.log(`Projekt ID: ${projectId}`);
+  try {
+    const project = await Project.findOne({ _id: projectId });
+    console.log(project);
+    const { projectName } = project;
+    if (project) res.status(200).json(projectName);
+    else res.status(404).json({ message: "User has no projects." });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({ message: "Server error: Could not fetch projects" });
+  }
+};
+
 export {
   getAllProjectsByUser,
   getAllRecentProjectsByUser,
   createNewProject,
   getProjectByRequestedId,
+  getProjectName,
 };
