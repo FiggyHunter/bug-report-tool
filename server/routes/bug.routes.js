@@ -4,15 +4,16 @@ import {
   createNewBug,
   deleteBug,
   getAllBugs,
-  getAllBugsByUser,
+  getAllRecentBugs,
 } from "../controllers/bug.controller.js";
-import authMiddleware from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
 router
   .get("/", getAllBugs)
+  .get("/recent", getAllRecentBugs)
   .post("/create", createNewBug)
+  .patch("/update/:bugId", changeCompletedStatus)
   .delete("/delete/:id", deleteBug);
 
 export default router;
