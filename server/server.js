@@ -25,7 +25,6 @@ app.use("/project", projectRoutes);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.get("/", (req, res) => {
-  console.log(req.body);
   res.status(200).send("Hello World!");
 });
 

@@ -38,10 +38,10 @@ export const getAllRecentBugs = async (req, res) => {
   /*  #swagger.tags = ['Bugs']
 #swagger.description = 'Endpoint to get the recent 5 bugs from the user.' 
   */
+
   const id = req.headers["x-user-id"];
   try {
     const bugs = await Bug.find({ createdBy: id });
-    console.log(id);
     res.status(200).send(bugs.reverse().slice(0, 5));
   } catch (error) {
     res
@@ -98,7 +98,6 @@ export const getAllBugsByUser = async (req, res) => {
     if (bugs) res.status(400).json({ bugs });
     else res.status(400).json({ message: "Could not find bugs" });
   } catch (e) {
-    console.log(e);
     res.status(400).json({ message: "Server error: Could not fetch bugs" });
   }
 };
